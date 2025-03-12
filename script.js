@@ -120,14 +120,14 @@ document.getElementById("quantity").addEventListener("input", function() {
     document.querySelector(".total-price").textContent = (500 * quantity) + " ₽";
 });
 
-async function submitForm() {
+ async function submitForm() {
         // Собираем данные формы
         var name = document.getElementById("name").value;
         var phone = document.getElementById("phone").value;
         var promo = document.getElementById("promo").value.trim() === "" ? "Нет промокода" : document.getElementById("promo").value;
         var quantity = document.getElementById("quantity").value;
         var totalPrice = document.getElementById("total-price").innerText;
-        var userId = 'Y1366351508'; // Укажите реальный user_id
+        var userId = 'YOUR_USER_ID'; // Укажите реальный user_id
 
         // Логируем данные формы для отладки
         console.log("Данные формы:", { name, phone, promo, quantity, totalPrice, userId });
@@ -164,3 +164,4 @@ async function submitForm() {
     }
 
     document.querySelector(".btn-submit").addEventListener("click", submitForm);
+
