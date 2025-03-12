@@ -120,48 +120,44 @@ document.getElementById("quantity").addEventListener("input", function() {
     document.querySelector(".total-price").textContent = (500 * quantity) + " ₽";
 });
 
- async function submitForm() {
-        // Собираем данные формы
-        var name = document.getElementById("name").value;
-        var phone = document.getElementById("phone").value;
-        var promo = document.getElementById("promo").value.trim() === "" ? "Нет промокода" : document.getElementById("promo").value;
-        var quantity = document.getElementById("quantity").value;
-        var totalPrice = document.getElementById("total-price").innerText;
-        var userId = '1366351508'; // Укажите реальный user_id
+ const SERVER_URL = "http://127.0.0.1:5000"; // Или твой реальный сервер
 
-        // Логируем данные формы для отладки
-        console.log("Данные формы:", { name, phone, promo, quantity, totalPrice, userId });
+async function submitForm() {
+    var name = document.getElementById("name").value;
+    var phone = document.getElementById("phone").value;
+    var promo = document.getElementById("promo").value.trim() === "" ? "Нет промокода" : document.getElementById("promo").value;
+    var quantity = document.getElementById("quantity").value;
+    var totalPrice = document.getElementById("total-price").innerText;
+    var userId = "YOUR_USER_ID"; // Укажи реальный user_id
 
-        // Отправка данных на сервер Flask
-        try {
-            const response = await fetch('/send_ticket_info', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    user_id: userId,
-                    name: name,
-                    phone: phone,
-                    quantity: quantity,
-                    promo: promo,
-                    total_price: totalPrice
-                })
-            });
+    console.log("Данные формы:", { name, phone, promo, quantity, totalPrice, userId });
 
-            const result = await response.json();
-            console.log(result);
+    try {
+        const response = await fetch(`${SERVER_URL}/send_ticket_info`, { // ← Правильный адрес
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                user_id: userId,
+                name: name,
+                phone: phone,
+                quantity: quantity,
+                promo: promo,
+                total_price: totalPrice
+            })
+        });
 
-            if (response.ok) {
-                alert("Данные отправлены в Telegram!");
-            } else {
-                alert("Ошибка при отправке. Проверьте настройки сервера.");
-            }
-        } catch (error) {
-            console.error('Ошибка:', error);
-            alert("Ошибка при отправке данных. Попробуйте позже.");
+        const result = await response.json();
+        console.log("Ответ сервера:", result);
+
+        if (response.ok) {
+            alert("Данные отправлены в Telegram!");
+        } else {
+            alert("Ошибка при отправке. Проверьте сервер.");
         }
+    } catch (error) {
+        console.error("Ошибка:", error);
+        alert("Ошибка сети. Проверьте подключение.");
     }
+}
 
-    document.querySelector(".btn-submit").addEventListener("click", submitForm);
-
+document.querySelector(".btn-submit").addEventListener("click", submitForm);
