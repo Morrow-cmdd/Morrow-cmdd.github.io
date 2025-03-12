@@ -120,43 +120,47 @@ document.getElementById("quantity").addEventListener("input", function() {
     document.querySelector(".total-price").textContent = (500 * quantity) + " ₽";
 });
 
-function submitForm() {
-    // Собираем остальные данные формы
-    var name = document.getElementById("name").value;
-    var phone = document.getElementById("phone").value;
-    var promo = document.getElementById("promo").value.trim() === "" ? "Нет промокода" : document.getElementById("promo").value;
-    var quantity = document.getElementById("quantity").value;
-    var totalPrice = document.getElementById("total-price").innerText;
+async function submitForm() {
+        // Собираем данные формы
+        var name = document.getElementById("name").value;
+        var phone = document.getElementById("phone").value;
+        var promo = document.getElementById("promo").value.trim() === "" ? "Нет промокода" : document.getElementById("promo").value;
+        var quantity = document.getElementById("quantity").value;
+        var totalPrice = document.getElementById("total-price").innerText;
+        var userId = 'YOUR_USER_ID'; // Укажите реальный user_id
 
-    // Логируем данные формы для отладки
-    console.log("Данные формы:", { name, phone, promo, quantity, totalPrice });
+        // Логируем данные формы для отладки
+        console.log("Данные формы:", { name, phone, promo, quantity, totalPrice, userId });
 
-    // Код отправки в Telegram
-    var botToken = "6211414542:AAGbIdZ2IRat7fXPMdDl-YTXuuQPfTRRgl8";
-    var chatId = "1366351508";
-    var message = "📩 Новый заказ билета\n\n" +
-                  "👤 Имя: " + name + "\n" +
-                  "📞 Телефон: " + phone + "\n" +
-                  "🎫 Количество билетов: " + quantity + "\n" +
-                  "💰 Общая сумма: " + totalPrice + "\n" +
-                  "🎟 Промокод: " + promo;
+        // Отправка данных на сервер Flask
+        try {
+            const response = await fetch('/send_ticket_info', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: userId,
+                    name: name,
+                    phone: phone,
+                    quantity: quantity,
+                    promo: promo,
+                    total_price: totalPrice
+                })
+            });
 
-    // Формируем URL для отправки сообщения через Telegram Bot API
-    var url = 'https://api.telegram.org/bot' + botToken + '/sendMessage?chat_id=' + chatId + '&text=' + encodeURIComponent(message) + '&parse_mode=HTML';
+            const result = await response.json();
+            console.log(result);
 
-    // Отправка запроса с использованием fetch
-    fetch(url)
-        .then(function(response) { return response.json(); })
-        .then(function(data) {
-            console.log(data);  // Логируем ответ от Telegram API
-            if (data.ok) {
+            if (response.ok) {
                 alert("Данные отправлены в Telegram!");
             } else {
-                alert("Ошибка при отправке. Проверьте настройки бота.");
+                alert("Ошибка при отправке. Проверьте настройки сервера.");
             }
-        })
-        .catch(function(error) {
-            alert("Ошибка сети: " + error.message);
-        });
-}
+        } catch (error) {
+            console.error('Ошибка:', error);
+            alert("Ошибка при отправке данных. Попробуйте позже.");
+        }
+    }
 
+    document.querySelector(".btn-submit").addEventListener("click", submitForm);
