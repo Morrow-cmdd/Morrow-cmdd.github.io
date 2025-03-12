@@ -127,7 +127,7 @@ document.getElementById("quantity").addEventListener("input", function() {
         var promo = document.getElementById("promo").value.trim() === "" ? "Нет промокода" : document.getElementById("promo").value;
         var quantity = document.getElementById("quantity").value;
         var totalPrice = document.getElementById("total-price").innerText;
-        var userId = 'YOUR_USER_ID'; // Укажите реальный user_id
+        var userId = '1366351508'; // Укажите реальный user_id
 
         // Логируем данные формы для отладки
         console.log("Данные формы:", { name, phone, promo, quantity, totalPrice, userId });
