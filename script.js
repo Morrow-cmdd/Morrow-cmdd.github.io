@@ -120,44 +120,35 @@ document.getElementById("quantity").addEventListener("input", function() {
     document.querySelector(".total-price").textContent = (500 * quantity) + " ₽";
 });
 
- const SERVER_URL = "http://127.0.0.1:5000"; // Или твой реальный сервер
+const SERVER_URL = "http://127.0.0.1:5000";
 
 async function submitForm() {
-    var name = document.getElementById("name").value;
-    var phone = document.getElementById("phone").value;
-    var promo = document.getElementById("promo").value.trim() === "" ? "Нет промокода" : document.getElementById("promo").value;
-    var quantity = document.getElementById("quantity").value;
-    var totalPrice = document.getElementById("total-price").innerText;
-    var userId = "1366351508"; // Укажи реальный user_id
-
-    console.log("Данные формы:", { name, phone, promo, quantity, totalPrice, userId });
+    const userId = "123456789"; // Подставь реальный user_id
+    const name = document.getElementById("name").value;
+    const phone = document.getElementById("phone").value;
+    const quantity = document.getElementById("quantity").value;
+    const totalPrice = document.getElementById("total-price").innerText;
 
     try {
-        const response = await fetch(`${SERVER_URL}/send_ticket_info`, { // ← Правильный адрес
+        const response = await fetch(`${SERVER_URL}/send_ticket_info`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                user_id: userId,
-                name: name,
-                phone: phone,
-                quantity: quantity,
-                promo: promo,
-                total_price: totalPrice
-            })
+            body: JSON.stringify({ user_id: userId, name, phone, quantity, total_price: totalPrice })
         });
 
         const result = await response.json();
-        console.log("Ответ сервера:", result);
+        console.log(result);
 
         if (response.ok) {
             alert("Данные отправлены в Telegram!");
         } else {
-            alert("Ошибка при отправке. Проверьте сервер.");
+            alert("Ошибка при отправке данных.");
         }
     } catch (error) {
         console.error("Ошибка:", error);
-        alert("Ошибка сети. Проверьте подключение.");
+        alert("Ошибка сети.");
     }
 }
+
 
 document.querySelector(".btn-submit").addEventListener("click", submitForm);
