@@ -176,7 +176,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Отправка формы
-    async function submitForm() {
+    async function submitForm(event) {
+        event.preventDefault(); // Останавливаем отправку формы
+
         const userId = "123456789"; // Подставь реальный user_id
         const name = nameInput.value;
         const phone = phoneInput.value;
@@ -210,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Добавляем обработчик на кнопку "Купить"
+    // Проверка наличия кнопки и добавление обработчика события
     if (submitButton) {
         submitButton.addEventListener("click", submitForm);
     } else {
