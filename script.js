@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    const submitButton = document.querySelector(".btn-submit");
+    const submitButton = document.querySelector("btn-submit");
     const phoneInput = document.getElementById("phone");
     const nameInput = document.getElementById("name");
     const quantityInput = document.getElementById("quantity");
