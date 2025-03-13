@@ -66,7 +66,14 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Поднимаем сюда функцию submitForm()
+    const submitButton = document.querySelector(".btn-submit");
+    const phoneInput = document.getElementById("phone");
+    const nameInput = document.getElementById("name");
+    const quantityInput = document.getElementById("quantity");
+    const promoInput = document.getElementById("promo");
+    const totalPriceElement = document.getElementById("total-price");
+
+    // Функция обработки формы
     async function submitForm() {
         const userId = "123456789"; // Подставь реальный user_id
         const name = nameInput.value;
@@ -101,15 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Переменные
-    const submitButton = document.querySelector(".btn-submit");
-    const phoneInput = document.getElementById("phone");
-    const nameInput = document.getElementById("name");
-    const quantityInput = document.getElementById("quantity");
-    const promoInput = document.getElementById("promo");
-    const totalPriceElement = document.getElementById("total-price");
-
-    // Проверка наличия кнопки и добавление обработчика
+    // Добавляем обработчик события на кнопку
     if (submitButton) {
         submitButton.addEventListener("click", submitForm);
     } else {
@@ -134,6 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var value = event.target.value;
         phoneInput.value = formatPhone(value);
     });
+
 
     // Слушатель для изменения количества билетов и обновления общей стоимости
     const basePricePerTicket = 500; // Базовая стоимость билета
