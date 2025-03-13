@@ -66,72 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    const submitButton = document.querySelector("btn-submit");
-    const phoneInput = document.getElementById("phone");
-    const nameInput = document.getElementById("name");
-    const quantityInput = document.getElementById("quantity");
-    const promoInput = document.getElementById("promo");
-    const totalPriceElement = document.getElementById("total-price");
-    const discountLabel = document.getElementById("discount-label");
-
-    // Проверяем, если кнопка найдена
-    if (submitButton) {
-        submitButton.addEventListener("click", submitForm);
-    } else {
-        console.error("Кнопка не найдена!");
-    }
-
-    // Форматирование номера телефона
-    function formatPhone(value) {
-        var numbers = value.replace(/\D/g, ""); // Убираем все символы, кроме цифр
-        if (numbers.length === 0 || numbers[0] !== "7") {
-            numbers = "7" + numbers;
-        }
-        var formatted = "+7 ";
-        if (numbers.length > 1) formatted += "(" + numbers.slice(1, 4);
-        if (numbers.length >= 5) formatted += ") " + numbers.slice(4, 7);
-        if (numbers.length >= 8) formatted += "-" + numbers.slice(7, 9);
-        if (numbers.length >= 10) formatted += "-" + numbers.slice(9, 11);
-        return formatted;
-    }
-
-    phoneInput.addEventListener("input", function (event) {
-        var value = event.target.value;
-        phoneInput.value = formatPhone(value); // Применяем форматирование
-    });
-
-    // Слушатель для изменения количества билетов и обновления общей стоимости
-    const basePricePerTicket = 500; // Базовая стоимость билета
-    const promoCodes = {
-        "VOTAKOI": 0.1,  // 10% скидка
-        "SUPER50": 0.5,  // 50% скидка
-        "DISCOUNT20": 0.2 // 20% скидка
-    };
-
-    function updateTotalPrice() {
-        var quantity = parseInt(quantityInput.value) || 1; // Количество билетов
-        if (quantity < 1) quantity = 1;
-
-        var promoCode = promoInput.value.trim().toUpperCase();
-        var discount = promoCodes[promoCode] || 0;
-
-        var total = basePricePerTicket * quantity;
-        var discountedTotal = total - (total * discount);
-
-        totalPriceElement.textContent = Math.round(discountedTotal) + " ₽"; // Обновляем цену
-
-        if (discount > 0) {
-            discountLabel.textContent = "-" + (discount * 100) + "% скидка";
-            discountLabel.style.display = "block";
-        } else {
-            discountLabel.style.display = "none";
-        }
-    }
-
-    quantityInput.addEventListener("input", updateTotalPrice); // Обновление при изменении количества билетов
-    promoInput.addEventListener("input", updateTotalPrice); // Обновление при вводе промокода
-
-    // Функция отправки данных через fetch
+    // Поднимаем сюда функцию submitForm()
     async function submitForm() {
         const userId = "123456789"; // Подставь реальный user_id
         const name = nameInput.value;
@@ -165,4 +100,71 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Ошибка при отправке данных. Попробуйте позже.");
         }
     }
+
+    // Переменные
+    const submitButton = document.querySelector(".btn-submit");
+    const phoneInput = document.getElementById("phone");
+    const nameInput = document.getElementById("name");
+    const quantityInput = document.getElementById("quantity");
+    const promoInput = document.getElementById("promo");
+    const totalPriceElement = document.getElementById("total-price");
+
+    // Проверка наличия кнопки и добавление обработчика
+    if (submitButton) {
+        submitButton.addEventListener("click", submitForm);
+    } else {
+        console.error("Кнопка не найдена!");
+    }
+
+    // Форматирование телефона
+    function formatPhone(value) {
+        var numbers = value.replace(/\D/g, "");
+        if (numbers.length === 0 || numbers[0] !== "7") {
+            numbers = "7" + numbers;
+        }
+        var formatted = "+7 ";
+        if (numbers.length > 1) formatted += "(" + numbers.slice(1, 4);
+        if (numbers.length >= 5) formatted += ") " + numbers.slice(4, 7);
+        if (numbers.length >= 8) formatted += "-" + numbers.slice(7, 9);
+        if (numbers.length >= 10) formatted += "-" + numbers.slice(9, 11);
+        return formatted;
+    }
+
+    phoneInput.addEventListener("input", function (event) {
+        var value = event.target.value;
+        phoneInput.value = formatPhone(value);
+    });
+
+    // Слушатель для изменения количества билетов и обновления общей стоимости
+    const basePricePerTicket = 500; // Базовая стоимость билета
+    const promoCodes = {
+        "VOTAKOI": 0.1,  // 10% скидка
+        "SUPER50": 0.5,  // 50% скидка
+        "DISCOUNT20": 0.2 // 20% скидка
+    };
+
+    function updateTotalPrice() {
+        var quantity = parseInt(quantityInput.value) || 1; // Количество билетов
+        if (quantity < 1) quantity = 1;
+
+        var promoCode = promoInput.value.trim().toUpperCase();
+        var discount = promoCodes[promoCode] || 0;
+
+        var total = basePricePerTicket * quantity;
+        var discountedTotal = total - (total * discount);
+
+        totalPriceElement.textContent = Math.round(discountedTotal) + " ₽"; // Обновляем цену
+
+        if (discount > 0) {
+            discountLabel.textContent = "-" + (discount * 100) + "% скидка";
+            discountLabel.style.display = "block";
+        } else {
+            discountLabel.style.display = "none";
+        }
+    }
+
+    quantityInput.addEventListener("input", updateTotalPrice); // Обновление при изменении количества билетов
+    promoInput.addEventListener("input", updateTotalPrice); // Обновление при вводе промокода
+
+
 });
