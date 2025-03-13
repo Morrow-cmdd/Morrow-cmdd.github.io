@@ -120,7 +120,7 @@ document.getElementById("quantity").addEventListener("input", function() {
     document.querySelector(".total-price").textContent = (500 * quantity) + " ₽";
 });
 
-const SERVER_URL = "http://127.0.0.1:5000";
+const SERVER_URL = "http://127.0.0.1:5000"; // Адрес сервера Flask
 
 async function submitForm() {
     const userId = "123456789"; // Подставь реальный user_id
@@ -133,7 +133,13 @@ async function submitForm() {
         const response = await fetch(`${SERVER_URL}/send_ticket_info`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user_id: userId, name, phone, quantity, total_price: totalPrice })
+            body: JSON.stringify({
+                user_id: userId,
+                name: name,
+                phone: phone,
+                quantity: quantity,
+                total_price: totalPrice
+            })
         });
 
         const result = await response.json();
@@ -142,13 +148,14 @@ async function submitForm() {
         if (response.ok) {
             alert("Данные отправлены в Telegram!");
         } else {
-            alert("Ошибка при отправке данных.");
+            alert("Ошибка при отправке. Проверьте настройки сервера.");
         }
     } catch (error) {
         console.error("Ошибка:", error);
-        alert("Ошибка сети.");
+        alert("Ошибка при отправке данных. Попробуйте позже.");
     }
 }
 
-
+// Добавляем обработчик на кнопку "Купить"
 document.querySelector(".btn-submit").addEventListener("click", submitForm);
+
