@@ -73,40 +73,41 @@ document.addEventListener("DOMContentLoaded", function () {
     const promoInput = document.getElementById("promo");
     const totalPriceElement = document.getElementById("total-price");
 
-    // Функция обработки формы
-    async function submitForm() {
-        const userId = "123456789"; // Подставь реальный user_id
-        const name = nameInput.value;
-        const phone = phoneInput.value;
-        const quantity = quantityInput.value;
-        const totalPrice = totalPriceElement.innerText;
+async function submitForm() {
+    const userId = "123456789"; // Подставь реальный user_id
+    const name = nameInput.value;
+    const phone = phoneInput.value;
+    const quantity = quantityInput.value;
+    const totalPrice = totalPriceElement.innerText;
 
-        try {
-            const response = await fetch("http://127.0.0.1:5000/send_ticket_info", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    user_id: userId,
-                    name: name,
-                    phone: phone,
-                    quantity: quantity,
-                    total_price: totalPrice
-                })
-            });
+    try {
+        const response = await fetch("http://127.0.0.1:5000/send_ticket_info", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                user_id: userId,
+                name: name,
+                phone: phone,
+                quantity: quantity,
+                total_price: totalPrice
+            })
+        });
 
-            const result = await response.json();
-            console.log(result);
+        const result = await response.json();
+        console.log(result);
 
-            if (response.ok) {
-                alert("Данные отправлены в Telegram!");
-            } else {
-                alert("Ошибка при отправке. Проверьте настройки сервера.");
-            }
-        } catch (error) {
-            console.error("Ошибка:", error);
-            alert("Ошибка при отправке данных. Попробуйте позже.");
+        if (response.ok) {
+            alert("Данные отправлены в Telegram!");
+        } else {
+            alert("Ошибка при отправке. Проверьте настройки сервера.");
         }
+    } catch (error) {
+        console.error("Ошибка:", error);
+        alert("Ошибка при отправке данных. Попробуйте позже.");
     }
+}
 
     // Добавляем обработчик события на кнопку
     if (submitButton) {
